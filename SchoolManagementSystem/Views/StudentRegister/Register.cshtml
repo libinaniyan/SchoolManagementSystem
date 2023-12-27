@@ -1,0 +1,184 @@
+﻿@model SchoolManagementSystem.Models.StudentModel
+
+
+@{
+    ViewBag.Title = "Register";
+}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<h2>Register</h2>
+
+@using (Html.BeginForm("Register", "StudentRegister", FormMethod.Post, new { id = "registrationForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control required " } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control required" } })
+                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "datepicker required" } })
+                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control required" } })
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control required" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control required" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model._password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model._password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model._password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+        <!--Render a partial view for qualification inside the register view -->
+        <div class="form-group">
+            <h6>Qualifications</h6>
+            <div class="qualification-fields">
+                <div class="qualification-field">
+                    @Html.Partial("QualificationFields", new SchoolManagementSystem.Models.QualificationModel())
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <button type="button" class="add-qualification">Add More</button>
+        </div>
+
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+<script>
+  // Cloning of the qualifications fields for adding more qualifications.
+    $(".add-qualification").on("click", function () {
+        var newQualificationField = $(".qualification-field:first").clone();
+        newQualificationField.find("input").val("");
+        $(".qualification-fields").append(newQualificationField);
+    });
+
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:' + new Date().getFullYear()
+        });
+    });
+    function collectQualifications() {
+        var qualifications = [];
+
+        $(".qualification-fields").find(".qualification-field").each(function () {
+            var qualification = {
+                CourseName: $(this).find(".qualification-course").val(),
+                Percentage: $(this).find(".qualification-percentage").val(),
+                YearOfPassing: $(this).find(".qualification-year").val()
+            };
+
+            qualifications.push(qualification);
+        });
+        $("#QualificationsJson").val(JSON.stringify(qualifications));
+    }
+    $("#registrationForm").submit(function () {
+        collectQualifications();
+    });
+    //Validations using jQuery
+    $("#registrationForm").validate({
+        rules: {
+            FirstName: "required",
+            Age: "required",
+            DateOfBirth: "required",
+            Gender: "required",
+            Email: {
+                required: true,
+                email: true
+            },
+            PhoneNumber: {
+                required: true,
+                minlength: 10,
+                maxlength: 10,
+                digits: true 
+            },
+        },
+        messages: {
+            FirstName: "Please enter your first name",
+            Age: "Please enter your age",
+            DateOfBirth: "Please enter your date of birth",
+            Gender: "Please select your gender",
+            Email: {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address"
+            },
+            PhoneNumber: "Please enter your phone number",
+        },
+        errorElement: "span",
+        errorPlacement: function (error, element) {
+            error.addClass("text-danger");
+            error.insertAfter(element);
+        }
+    });
+
+</script>

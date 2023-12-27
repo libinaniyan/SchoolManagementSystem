@@ -1,0 +1,35 @@
+﻿
+@model SchoolManagementSystem.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login Form";
+}
+
+<h2>Login </h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(m => m.Username)
+        @Html.TextBoxFor(m => m.Username)
+        @Html.ValidationMessageFor(m => m.Username)
+    </div>
+    <br />
+    <div>
+        @Html.LabelFor(m => m._password)
+        @Html.PasswordFor(m => m._password)
+        @Html.ValidationMessageFor(m => m._password)
+    </div>
+    <br />
+    <div>
+        <input type="submit" value="Sign In" />
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Don't have an account? Sign up", "Register", "StudentRegister")
+</div>
+
+

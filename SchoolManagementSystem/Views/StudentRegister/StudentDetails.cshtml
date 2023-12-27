@@ -1,0 +1,48 @@
+﻿@model SchoolManagementSystem.Models.StudentModel
+
+@{
+    ViewBag.Title = "Student Details";
+}
+
+<h2>Welcome, @Model.FirstName</h2>
+
+<table class="table">
+    <tr>
+        <th>Student Name</th>
+        <td> @Model.FirstName @Model.LastName</td>
+    </tr>
+    <tr>
+        <th>Age</th>
+        <td>@Model.Age</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>@Model.Email</td>
+    </tr>
+    <tr>
+        <th>Contact</th>
+        <td>@Model.PhoneNumber</td>
+    </tr>
+</table>
+<h3>Qualifications</h3>
+@if (Model.Qualifications != null && Model.Qualifications.Any())
+{
+    <table class="table">
+        <tr>
+            <th>Course Name</th>
+            <th>Percentage</th>
+            <th>Year of Passing</th>
+        </tr>
+        @foreach (var qualification in Model.Qualifications)
+        {
+            <tr>
+                <td>@qualification.CourseName</td>
+                <td>@qualification.Percentage%</td>
+                <td>@qualification.YearOfPassing</td>
+            </tr>
+        }
+    </table>
+}
+
+
+
